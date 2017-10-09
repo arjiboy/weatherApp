@@ -1,20 +1,16 @@
-/*uses ip-api to track location*/
+/*uses geolocation to track location*/
 
-var url = "http://ip-api.com/json";
 var unit = 'C';
 var temp = '';
 
 
-function weather(n){
-	fetch(n)
-	.then(function(res){
-		return res.json()
-	})
-	.then(function(data){
-		return ({lon: data.lon, lat: data.lat});
-	})
-	.then(function(data){
-		var endpoint = "https://fcc-weather-api.glitch.me/api/current?lat=" + data.lat + "&lon=" + data.lon;
+function weather(){
+	var lon = '';
+	var lat = '';
+  
+  function exec(){
+
+		var endpoint = "https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&lon=" + lon;
 		fetch(endpoint)
 		.then(function(data){
 			return(data.json())
@@ -25,14 +21,22 @@ function weather(n){
 			document.getElementById('icon').innerHTML = "<img src=" + data.weather[0].icon + ">";
 			document.getElementById('temp').innerHTML = data.main.temp + "&deg; C";
 
-		})	
-	})
-	.catch(function(error){
-		console.log(error)
-	})
+		})
+		.catch(function(error){
+			console.log(error)
+		})
+	}
+
+	if (navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(function(pos){
+			lon = pos.coords.longitude;
+			lat = pos.coords.latitude;
+			exec();
+		})
+	}
 }
 
-weather(url);
+weather();
 
 document.getElementById('btn').addEventListener('click',function(){
 	var temp = ((document.getElementById('temp').innerHTML).split("°"))[0]
@@ -52,5 +56,5 @@ document.getElementById('btn').addEventListener('click',function(){
 
 document.getElementById('ref').addEventListener('click',function(){
 	weather(url);
-})
+});
 
