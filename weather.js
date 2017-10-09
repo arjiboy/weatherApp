@@ -4,8 +4,16 @@ var url = "http://ip-api.com/json";
 var unit = 'C';
 var temp = '';
 
+function bg(){
+	var colors = ['#8e44ad',"#1abc9c","#16a085","#f39c12","#2ecc71","#27ae60","#e67e22","#d35400","#c0392b","#e74c3c","#3498db","#2980b9","#9b59b6"];
+	var rand = Math.floor(Math.random() * colors.length);
+
+	console.log(colors[rand])
+	document.getElementsByTagName('body')[0].style.background = colors[rand];
+}
 
 function weather(n){
+	bg();
 	fetch(n)
 	.then(function(res){
 		return res.json()
