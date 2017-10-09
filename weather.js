@@ -1,6 +1,6 @@
-/*uses ip-api to track location*/
+/*uses httsps://ipinfo to track location*/
 
-var url = "http://ip-api.com/json";
+var url = "https://ipinfo.io/json";
 var unit = 'C';
 var temp = '';
 
@@ -8,7 +8,6 @@ function bg(){
 	var colors = ['#8e44ad',"#1abc9c","#16a085","#f39c12","#2ecc71","#27ae60","#e67e22","#d35400","#c0392b","#e74c3c","#3498db","#2980b9","#9b59b6"];
 	var rand = Math.floor(Math.random() * colors.length);
 
-	console.log(colors[rand])
 	document.getElementsByTagName('body')[0].style.background = colors[rand];
 }
 
@@ -19,7 +18,8 @@ function weather(n){
 		return res.json()
 	})
 	.then(function(data){
-		return ({lon: data.lon, lat: data.lat});
+		var d = data.loc.split(",")
+		return ({lon: Number(d[1]), lat: Number(d[0])});
 	})
 	.then(function(data){
 		var endpoint = "https://fcc-weather-api.glitch.me/api/current?lat=" + data.lat + "&lon=" + data.lon;
